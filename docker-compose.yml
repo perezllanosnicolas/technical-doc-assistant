@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  app:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+      - ./vectorstore:/app/vectorstore
+    env_file:
+      - .env
