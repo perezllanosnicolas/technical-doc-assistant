@@ -1,9 +1,38 @@
-# tests/test_chains.py
 import pytest
 from unittest.mock import MagicMock, patch
 from langchain_core.documents import Document
-from langchain_core.messages import AIMessage
+from langchain_core.messages import AIMessage, BaseMessage
+from langchain_core.language_models.chat_models import BaseChatModel
+from langchain_core.outputs import ChatResult, ChatGeneration
+from langchain_core.retrievers import BaseRetriever
+from langchain_core.callbacks import CallbackManagerForRetrieverRun
+from typing import List, Optional, Any
 
+
+# ── Clases Mock Nativas de LangChain ──────────────────────────────────
+class MockChatModel(BaseChatModel):
+    response_text: str
+
+    def _generate(
+        self,
+        messages: List[BaseMessage],
+        stop: Optional[List[str]] = None,
+        run_manager: Optional[Any] = None,
+        **kwargs: Any,
+    ) -> ChatResult:
+        return ChatResult(
+            generations=[ChatGeneration(message=AIMessage(content=self.response_text))]
+        )
+
+    @property
+    def _llm_type(self) -> str:
+        return "mock-chat-model"
+
+class MockRetriever(BaseRetriever):
+    docs: List[Document]
+
+    def _get_relevant_documents(self, query: str, *, run_manager: CallbackManagerForRetrieverRun) -> List[Document]:
+        return self.docs
 
 # ── Helpers / Factories ───────────────────────────────────────────────
 def make_mock_vectorstore(docs: list[Document] = None):
@@ -21,19 +50,12 @@ def make_mock_vectorstore(docs: list[Document] = None):
         ]
     mock_vs = MagicMock()
     mock_vs.similarity_search.return_value = docs
-    mock_vs.as_retriever.return_value = MagicMock()
-    mock_vs.as_retriever.return_value.invoke.return_value = docs
+    mock_vs.as_retriever.return_value = MockRetriever(docs=docs)
     return mock_vs
 
-
 def make_mock_llm(response_text: str = "This is a mocked LLM response."):
-    """Returns a mock LLM that responds with a fixed AIMessage."""
-    mock = MagicMock()
-    mock.invoke.return_value = AIMessage(content=response_text)
-    mock.__or__ = lambda self, other: MagicMock(
-        invoke=lambda x: AIMessage(content=response_text)
-    )
-    return mock
+    """Returns a real LangChain Mock model that passes Pydantic validation."""
+    return MockChatModel(response_text=response_text)
 
 
 # ── Tests: get_qa_chain ───────────────────────────────────────────────
