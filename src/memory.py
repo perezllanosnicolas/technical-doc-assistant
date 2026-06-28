@@ -1,5 +1,5 @@
-from langchain.memory import ConversationBufferWindowMemory
-from langchain.chains import ConversationalRetrievalChain
+from langchain_classic.memory import ConversationBufferWindowMemory
+from langchain_classic.chains import ConversationalRetrievalChain
 from .chains import get_llm
 
 def get_conversational_chain(vectorstore):

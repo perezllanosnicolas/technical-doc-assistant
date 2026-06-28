@@ -40,8 +40,8 @@ with st.sidebar:
     # Select mode
     mode = st.radio("Mode", ["Q&A Chat", "Extract Requirements", "Generate Summary"])
     
-    # Select model
-    model = st.selectbox("Model", ["llama3-8b-8192", "llama3-70b-8192", "mixtral-8x7b-32768"])
+# Select model
+    model = st.selectbox("Model", ["openai/gpt-oss-20b", "llama-3.3-70b-versatile", "mixtral-8x7b-32768"])
 
 # ── Main area ────────────────────────────────────────────────────────
 if "vectorstore" not in st.session_state:

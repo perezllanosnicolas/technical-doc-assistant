@@ -1,10 +1,10 @@
 from langchain_groq import ChatGroq
-from langchain.chains import RetrievalQA
-from langchain.memory import ConversationBufferWindowMemory
+from langchain_classic.chains import RetrievalQA
+from langchain_classic.memory import ConversationBufferWindowMemory
 from .prompts import QA_PROMPT, REQUIREMENTS_PROMPT, SUMMARY_PROMPT
 import os
 
-def get_llm(model: str = "llama3-8b-8192"):
+def get_llm(model: str = "openai/gpt-oss-20b"):
     return ChatGroq(
         api_key=os.getenv("GROQ_API_KEY"),
         model_name=model,

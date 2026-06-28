@@ -1,4 +1,4 @@
-from langchain.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate
 
 QA_PROMPT = ChatPromptTemplate.from_template("""
 You are a technical documentation assistant. Answer the question 
