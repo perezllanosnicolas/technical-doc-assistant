@@ -4,7 +4,7 @@ from src.retriever import compare_retrievers
 from src.ingestion import load_vectorstore
 from langchain_core.documents import Document
 
-# ── 1. Cargar vectorstore ─────────────────────────────────────────────
+# ── 1. Charge vectorstore ─────────────────────────────────────────────
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 persist_dir = os.path.join(base_dir, "vectorstore")
 
@@ -18,7 +18,7 @@ all_docs = [
 ]
 print(f"✅ {len(all_docs)} chunks loaded\n")
 
-# ── 2. Queries de benchmark ───────────────────────────────────────────
+# ── 2. Queries of benchmark ───────────────────────────────────────────
 queries = [
     "H-Net architecture advantages",
     "Hierarchical sequence modeling end-to-end",
