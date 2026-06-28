@@ -41,7 +41,7 @@ def get_contextual_retriever(vectorstore: Chroma, k: int = 4):
     # Filter out chunks below similarity threshold before returning
     compressor = EmbeddingsFilter(
         embeddings=embeddings,
-        similarity_threshold=0.55
+        similarity_threshold=0.40
     )
     return ContextualCompressionRetriever(
         base_compressor=compressor,
@@ -86,7 +86,8 @@ def compare_retrievers(vectorstore: Chroma, all_docs: List[Document], query: str
             results[name] = {
                 "num_chunks": len(docs),
                 "sources": [d.metadata.get("source", "unknown") for d in docs],
-                "preview": [d.page_content[:120] + "..." for d in docs]
+                "preview": [d.page_content[:120] + "..." for d in docs],
+                "docs": docs
             }
         except Exception as e:
             results[name] = {"error": str(e)}
